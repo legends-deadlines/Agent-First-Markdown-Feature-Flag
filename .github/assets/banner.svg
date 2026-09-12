@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300">
+  <defs>
+    <style>
+      @keyframes gridPulse { 0%,100%{opacity:.3} 50%{opacity:.6} }
+      @keyframes orbDrift1 { 0%,100%{transform:translate(0,0);opacity:.2} 50%{transform:translate(12px,-8px);opacity:.4} }
+      @keyframes orbDrift2 { 0%,100%{transform:translate(0,0);opacity:.12} 50%{transform:translate(-10px,6px);opacity:.28} }
+      @keyframes cursorBlink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+      @keyframes flagPulse { 0%,100%{fill:#56d364;filter:drop-shadow(0 0 4px #56d364)} 50%{fill:#3fb950;filter:drop-shadow(0 0 8px #3fb950)} }
+      @keyframes lineGrow { 0%{stroke-dashoffset:60} 100%{stroke-dashoffset:0} }
+      @keyframes wipGlow { 0%,100%{opacity:.85} 50%{opacity:1} }
+      @keyframes dotPulse { 0%,100%{r:4;opacity:1} 50%{r:6;opacity:.5} }
+    </style>
+    <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#58a6ff"/>
+      <stop offset="40%" stop-color="#bc8cff"/>
+      <stop offset="100%" stop-color="#56d364"/>
+    </linearGradient>
+    <linearGradient id="tg2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#58a6ff"/>
+      <stop offset="100%" stop-color="#bc8cff"/>
+    </linearGradient>
+    <radialGradient id="o1" cx="25%" cy="45%">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#0d1117" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="o2" cx="78%" cy="55%">
+      <stop offset="0%" stop-color="#bc8cff" stop-opacity=".15"/>
+      <stop offset="100%" stop-color="#0d1117" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip"><rect width="900" height="300" rx="12"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#clip)">
+    <!-- bg -->
+    <rect width="900" height="300" rx="12" fill="#0d1117"/>
+
+    <!-- subtle grid -->
+    <g style="animation:gridPulse 8s ease-in-out infinite">
+      <line x1="0" y1="60" x2="900" y2="60" stroke="#161b22" stroke-width=".5"/>
+      <line x1="0" y1="120" x2="900" y2="120" stroke="#161b22" stroke-width=".5"/>
+      <line x1="0" y1="180" x2="900" y2="180" stroke="#161b22" stroke-width=".5"/>
+      <line x1="0" y1="240" x2="900" y2="240" stroke="#161b22" stroke-width=".5"/>
+      <line x1="225" y1="0" x2="225" y2="300" stroke="#161b22" stroke-width=".5"/>
+      <line x1="450" y1="0" x2="450" y2="300" stroke="#161b22" stroke-width=".5"/>
+      <line x1="675" y1="0" x2="675" y2="300" stroke="#161b22" stroke-width=".5"/>
+    </g>
+
+    <!-- ambient orbs -->
+    <ellipse cx="180" cy="150" rx="240" ry="180" fill="url(#o1)" style="animation:orbDrift1 10s ease-in-out infinite"/>
+    <ellipse cx="720" cy="150" rx="220" ry="170" fill="url(#o2)" style="animation:orbDrift2 12s ease-in-out infinite"/>
+
+    <!-- top accent line -->
+    <rect y="0" width="900" height="1.5" fill="url(#tg)" opacity=".5"/>
+
+    <!-- ═══ LEFT: text ═══ -->
+
+    <!-- WIP badge -->
+    <g style="animation:wipGlow 3s ease-in-out infinite">
+      <rect x="44" y="32" width="170" height="26" rx="13" fill="#2a1500" stroke="#f0883e" stroke-width=".8"/>
+      <circle cx="62" cy="45" style="animation:dotPulse 2s ease-in-out infinite" fill="#f78166"/>
+      <text x="74" y="50" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700" fill="#f78166" letter-spacing="1.8">IN DEVELOPMENT</text>
+    </g>
+
+    <!-- title -->
+    <text x="44" y="110" font-family="Inter,system-ui,sans-serif" font-size="46" font-weight="900" fill="url(#tg)" letter-spacing="-1.5">Agent-First</text>
+    <text x="44" y="158" font-family="Inter,system-ui,sans-serif" font-size="46" font-weight="900" fill="url(#tg)" letter-spacing="-1.5">Feature Flags</text>
+
+    <!-- subtitle -->
+    <text x="46" y="192" font-family="Inter,system-ui,sans-serif" font-size="14.5" fill="#8b949e" letter-spacing=".3">Feature flags that AI coding agents actually understand</text>
+
+    <!-- concept pills -->
+    <g font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="600">
+      <rect x="46" y="216" width="72" height="26" rx="13" fill="#0d1117" stroke="#30363d" stroke-width=".8"/>
+      <text x="82" y="233" text-anchor="middle" fill="#58a6ff" letter-spacing=".8">Git</text>
+
+      <rect x="126" y="216" width="92" height="26" rx="13" fill="#0d1117" stroke="#30363d" stroke-width=".8"/>
+      <text x="172" y="233" text-anchor="middle" fill="#bc8cff" letter-spacing=".8">Markdown</text>
+
+      <rect x="226" y="216" width="92" height="26" rx="13" fill="#0d1117" stroke="#30363d" stroke-width=".8"/>
+      <text x="272" y="233" text-anchor="middle" fill="#56d364" letter-spacing=".8">Offline</text>
+
+      <rect x="326" y="216" width="100" height="26" rx="13" fill="#0d1117" stroke="#30363d" stroke-width=".8"/>
+      <text x="376" y="233" text-anchor="middle" fill="#ffa657" letter-spacing=".8">Open-core</text>
+    </g>
+
+    <!-- ═══ RIGHT: diagram ═══ -->
+    <g font-family="JetBrains Mono,Fira Code,monospace" font-size="9.5">
+
+      <!-- connecting lines -->
+      <line x1="618" y1="82" x2="720" y2="140" stroke="#21262d" stroke-width="1.2" stroke-dasharray="4 4" style="animation:lineGrow 2s ease-out forwards"/>
+      <line x1="618" y1="190" x2="720" y2="160" stroke="#21262d" stroke-width="1.2" stroke-dasharray="4 4" style="animation:lineGrow 2s ease-out .3s forwards"/>
+      <line x1="808" y1="150" x2="848" y2="150" stroke="#21262d" stroke-width="1.2" stroke-dasharray="4 4" style="animation:lineGrow 1s ease-out .8s forwards"/>
+
+      <!-- node: flags/*.md -->
+      <rect x="554" y="58" width="88" height="48" rx="8" fill="#161b22" stroke="#30363d" stroke-width=".8"/>
+      <text x="598" y="78" text-anchor="middle" fill="#58a6ff">flags/</text>
+      <circle cx="598" cy="94" r="3" style="animation:flagPulse 2s ease-in-out infinite"/>
+
+      <!-- node: codebase -->
+      <rect x="554" y="166" width="88" height="48" rx="8" fill="#161b22" stroke="#30363d" stroke-width=".8"/>
+      <text x="598" y="186" text-anchor="middle" fill="#bc8cff">codebase</text>
+      <text x="598" y="202" text-anchor="middle" fill="#484f58" font-size="8">AST scan</text>
+
+      <!-- node: output -->
+      <rect x="710" y="126" width="100" height="48" rx="8" fill="#161b22" stroke="#30363d" stroke-width=".8"/>
+      <text x="760" y="147" text-anchor="middle" fill="#ffa657">.cursorrules</text>
+      <text x="760" y="162" text-anchor="middle" fill="#484f58" font-size="8">CLAUDE.md</text>
+
+      <!-- status dots -->
+      <circle cx="856" cy="130" r="2.5" fill="#56d364" opacity=".7">
+        <animate attributeName="opacity" values=".7;.2;.7" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="856" cy="150" r="2.5" fill="#58a6ff" opacity=".7">
+        <animate attributeName="opacity" values=".2;.7;.2" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="856" cy="170" r="2.5" fill="#bc8cff" opacity=".7">
+        <animate attributeName="opacity" values=".7;.2;.7" dur="3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- terminal prompt at bottom -->
+    <g font-family="JetBrains Mono,Fira Code,monospace" font-size="12" fill="#484f58">
+      <text x="46" y="274">
+        <tspan fill="#56d364">❯</tspan>
+        <tspan fill="#8b949e"> dif compile</tspan>
+        <tspan fill="#484f58" style="animation:cursorBlink 1s step-end infinite">▊</tspan>
+      </text>
+    </g>
+  </g>
+
+  <!-- border -->
+  <rect x=".5" y=".5" width="899" height="299" rx="11.5" fill="none" stroke="url(#tg)" stroke-width=".8" opacity=".2"/>
+</svg>
