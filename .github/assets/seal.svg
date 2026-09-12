@@ -1,0 +1,370 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260">
+  <defs>
+    <style>
+      /* Aurora Borealis Animation */
+      @keyframes auroraWave1 {
+        0%, 100% { transform: translateX(0) rotate(0deg); opacity: 0.6; }
+        50% { transform: translateX(30px) rotate(1deg); opacity: 0.85; }
+      }
+      @keyframes auroraWave2 {
+        0%, 100% { transform: translateX(0) rotate(0deg); opacity: 0.5; }
+        50% { transform: translateX(-25px) rotate(-0.8deg); opacity: 0.75; }
+      }
+      @keyframes auroraWave3 {
+        0%, 100% { transform: translateX(0) rotate(0deg); opacity: 0.45; }
+        50% { transform: translateX(20px) rotate(0.5deg); opacity: 0.7; }
+      }
+      @keyframes auroraPulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 0.8; }
+      }
+
+      /* Seal Animation — SYNCED with waves (6s) */
+      @keyframes floatSeal {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        25% { transform: translateY(-5px) rotate(0.8deg); }
+        50% { transform: translateY(-8px) rotate(1.5deg); }
+        75% { transform: translateY(-4px) rotate(0.5deg); }
+      }
+      @keyframes breathe {
+        0%, 100% { transform: scaleX(1) scaleY(1); }
+        50% { transform: scaleX(1.01) scaleY(0.99); }
+      }
+      @keyframes flipperStroke {
+        0%, 100% { transform: rotate(-4deg); }
+        35% { transform: rotate(-16deg); }
+        70% { transform: rotate(-8deg); }
+      }
+      @keyframes doubleBlink {
+        0%, 45%, 49%, 53%, 100% { transform: scaleY(1); }
+        47% { transform: scaleY(0.1); }
+        51% { transform: scaleY(0.15); }
+      }
+      @keyframes whiskerSway {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(2deg); }
+      }
+
+      /* Bubble Trajectories */
+      @keyframes bubbleRise1 {
+        0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+        15% { opacity: 0.7; }
+        50% { transform: translate(8px, -30px) scale(0.95); }
+        100% { transform: translate(-4px, -65px) scale(1.15); opacity: 0; }
+      }
+      @keyframes bubbleRise2 {
+        0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+        20% { opacity: 0.6; }
+        55% { transform: translate(-10px, -25px) scale(1); }
+        100% { transform: translate(6px, -55px) scale(1.2); opacity: 0; }
+      }
+      @keyframes bubbleRise3 {
+        0% { transform: translate(0, 0) scale(0.7); opacity: 0; }
+        18% { opacity: 0.75; }
+        50% { transform: translate(5px, -22px) scale(1.05); }
+        100% { transform: translate(-8px, -60px) scale(1.25); opacity: 0; }
+      }
+
+      /* Water Reflections */
+      @keyframes reflectionShimmer {
+        0%, 100% { opacity: 0.15; }
+        50% { opacity: 0.45; }
+      }
+
+      .aurora-layer-1 { animation: auroraWave1 7s ease-in-out infinite; }
+      .aurora-layer-2 { animation: auroraWave2 9s ease-in-out infinite; }
+      .aurora-layer-3 { animation: auroraWave3 11s ease-in-out infinite; }
+      .aurora-glow { animation: auroraPulse 4s ease-in-out infinite; }
+
+      .seal-group {
+        animation: floatSeal 6s ease-in-out infinite;
+        transform-origin: 360px 145px;
+        transform-box: view-box;
+      }
+      .seal-body {
+        animation: breathe 3.4s ease-in-out infinite;
+        transform-origin: 360px 140px;
+        transform-box: view-box;
+      }
+      .flipper-front {
+        animation: flipperStroke 2.6s ease-in-out infinite;
+        transform-origin: 400px 150px;
+        transform-box: view-box;
+      }
+      .eye-side {
+        animation: doubleBlink 5.5s ease-in-out infinite;
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+      .whiskers {
+        animation: whiskerSway 3.8s ease-in-out infinite;
+        transform-origin: 462px 106px;
+        transform-box: view-box;
+      }
+      .reflection {
+        animation: reflectionShimmer 3.5s ease-in-out infinite;
+      }
+
+      .b1 { animation: bubbleRise1 3.8s ease-in-out infinite; }
+      .b2 { animation: bubbleRise2 4.6s ease-in-out 1.4s infinite; }
+      .b3 { animation: bubbleRise3 4.1s ease-in-out 2.3s infinite; }
+      .b4 { animation: bubbleRise1 4.9s ease-in-out 0.6s infinite; }
+      .b5 { animation: bubbleRise2 3.5s ease-in-out 3s infinite; }
+    </style>
+
+    <!-- Background Gradient -->
+    <radialGradient id="bgGrad" cx="50%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#0a1628"/>
+      <stop offset="60%" stop-color="#050d1a"/>
+      <stop offset="100%" stop-color="#020509"/>
+    </radialGradient>
+
+    <!-- Aurora Gradients -->
+    <linearGradient id="aurora1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#00ff88" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#00ccff" stop-opacity="0.8"/>
+      <stop offset="70%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="aurora2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0"/>
+      <stop offset="25%" stop-color="#22d3ee" stop-opacity="0.5"/>
+      <stop offset="50%" stop-color="#a78bfa" stop-opacity="0.7"/>
+      <stop offset="75%" stop-color="#ec4899" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </linearGradient>
+
+    <linearGradient id="aurora3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0"/>
+      <stop offset="40%" stop-color="#10b981" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#3b82f6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+
+    <radialGradient id="auroraGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0.3"/>
+      <stop offset="50%" stop-color="#00ccff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Seal Gradients — GRAY with spots -->
+    <linearGradient id="sealSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4d4d4"/>
+      <stop offset="40%" stop-color="#a8a8a8"/>
+      <stop offset="80%" stop-color="#787878"/>
+      <stop offset="100%" stop-color="#5a5a5a"/>
+    </linearGradient>
+
+    <linearGradient id="sealBelly" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f5f5f5"/>
+      <stop offset="70%" stop-color="#e0e0e0"/>
+      <stop offset="100%" stop-color="#b8b8b8"/>
+    </linearGradient>
+
+    <linearGradient id="waterDeep" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f2942"/>
+      <stop offset="40%" stop-color="#0a1a2e"/>
+      <stop offset="100%" stop-color="#030811"/>
+    </linearGradient>
+
+    <!-- Blur Filter for Aurora -->
+    <filter id="auroraBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+
+    <clipPath id="cardClip">
+      <rect width="800" height="260" rx="12" ry="12"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cardClip)">
+    <!-- Dark Background -->
+    <rect width="800" height="260" fill="url(#bgGrad)"/>
+
+    <!-- AURORA BOREALIS -->
+    <g opacity="0.8">
+      <!-- Aurora Glow -->
+      <ellipse class="aurora-glow" cx="400" cy="60" rx="350" ry="80" fill="url(#auroraGlow)"/>
+      
+      <!-- Aurora Layer 1 (Green-Blue-Purple) -->
+      <g class="aurora-layer-1" filter="url(#auroraBlur)">
+        <path d="M 50,80 Q 200,40 400,70 T 750,60" stroke="url(#aurora1)" stroke-width="35" fill="none" stroke-linecap="round"/>
+        <path d="M 80,95 Q 230,55 430,85 T 780,75" stroke="url(#aurora1)" stroke-width="28" fill="none" stroke-linecap="round" opacity="0.7"/>
+      </g>
+
+      <!-- Aurora Layer 2 (Cyan-Purple-Pink) -->
+      <g class="aurora-layer-2" filter="url(#auroraBlur)">
+        <path d="M 100,50 Q 300,30 500,60 T 800,45" stroke="url(#aurora2)" stroke-width="32" fill="none" stroke-linecap="round"/>
+        <path d="M 130,70 Q 330,50 530,80 T 830,65" stroke="url(#aurora2)" stroke-width="24" fill="none" stroke-linecap="round" opacity="0.6"/>
+      </g>
+
+      <!-- Aurora Layer 3 (Green-Blue) -->
+      <g class="aurora-layer-3" filter="url(#auroraBlur)">
+        <path d="M 30,110 Q 250,70 450,100 T 850,90" stroke="url(#aurora3)" stroke-width="30" fill="none" stroke-linecap="round"/>
+        <path d="M 60,125 Q 280,85 480,115 T 880,105" stroke="url(#aurora3)" stroke-width="22" fill="none" stroke-linecap="round" opacity="0.5"/>
+      </g>
+
+      <!-- Vertical Aurora Curtains -->
+      <g opacity="0.35" filter="url(#auroraBlur)">
+        <rect x="180" y="30" width="8" height="90" fill="#00ff88" opacity="0.6"/>
+        <rect x="280" y="25" width="10" height="95" fill="#00ccff" opacity="0.5"/>
+        <rect x="420" y="35" width="8" height="85" fill="#a78bfa" opacity="0.55"/>
+        <rect x="560" y="28" width="12" height="92" fill="#22d3ee" opacity="0.5"/>
+        <rect x="680" y="32" width="9" height="88" fill="#8b5cf6" opacity="0.6"/>
+      </g>
+    </g>
+
+    <!-- Full Moon -->
+    <g transform="translate(680, 20)">
+      <circle cx="35" cy="35" r="45" fill="url(#auroraGlow)"/>
+      <circle cx="35" cy="35" r="20" fill="#f0f5f9"/>
+      <circle cx="28" cy="28" r="3.5" fill="#d0d7de" opacity="0.6"/>
+      <circle cx="42" cy="38" r="2.8" fill="#d0d7de" opacity="0.5"/>
+      <circle cx="38" cy="24" r="1.8" fill="#d0d7de" opacity="0.4"/>
+    </g>
+
+    <!-- GRAY SPOTTED SEAL -->
+    <g class="seal-group">
+      <g class="seal-body">
+        <!-- Main Body — GRAY -->
+        <path d="M 470,115
+                 C 478,104 470,88 454,82
+                 C 436,76 414,80 395,92
+                 C 362,110 315,122 270,138
+                 C 245,148 228,148 212,142
+                 C 202,146 206,160 220,165
+                 C 240,170 268,172 298,178
+                 C 345,185 420,182 450,166
+                 C 468,154 475,134 470,115 Z" fill="url(#sealSkin)"/>
+
+        <!-- White Belly -->
+        <path d="M 278,166
+                 C 318,160 368,152 420,154
+                 C 448,155 456,162 442,172
+                 C 416,182 338,180 278,166 Z" fill="url(#sealBelly)"/>
+
+        <!-- DARK SPOTS (Spotted Seal Pattern) -->
+        <g fill="#2a2a2a" opacity="0.75">
+          <!-- Back spots -->
+          <ellipse cx="320" cy="128" rx="4.5" ry="3" transform="rotate(-15 320 128)"/>
+          <ellipse cx="340" cy="120" rx="6" ry="3.5" transform="rotate(-10 340 120)"/>
+          <ellipse cx="360" cy="112" rx="4" ry="2.5" transform="rotate(-5 360 112)"/>
+          <ellipse cx="380" cy="104" rx="6" ry="3.5" transform="rotate(-3 380 104)"/>
+          <ellipse cx="402" cy="98" rx="4.5" ry="2.8" transform="rotate(2 402 98)"/>
+          <ellipse cx="425" cy="94" rx="4" ry="2.5" transform="rotate(8 425 94)"/>
+          
+          <!-- Mid-body spots -->
+          <ellipse cx="295" cy="142" rx="3.5" ry="2.2" transform="rotate(-20 295 142)"/>
+          <ellipse cx="325" cy="138" rx="4" ry="2.5" transform="rotate(-12 325 138)"/>
+          <ellipse cx="355" cy="130" rx="5.5" ry="3" transform="rotate(-5 355 130)"/>
+          <ellipse cx="388" cy="124" rx="4" ry="2.5" transform="rotate(5 388 124)"/>
+          <ellipse cx="420" cy="120" rx="3.5" ry="2" transform="rotate(12 420 120)"/>
+          
+          <!-- Tail area spots -->
+          <circle cx="265" cy="148" r="2"/>
+          <circle cx="245" cy="150" r="1.5"/>
+        </g>
+
+        <!-- Flipper -->
+        <g class="flipper-front">
+          <path d="M 395,150 C 414,160 424,176 414,184 C 400,188 388,174 390,158 Z" fill="#5a5a5a"/>
+          <path d="M 397,152 C 412,160 420,174 411,180 C 401,184 391,172 393,158 Z" fill="#a8a8a8"/>
+          <path d="M 404,168 Q 410,174 406,178" stroke="#2a2a2a" stroke-width="0.8" fill="none" opacity="0.6"/>
+        </g>
+
+        <!-- Muzzle Pad (Snout Tip) -->
+        <path d="M 456,98 C 466,96 476,103 473,110 C 468,115 456,114 450,108 Z" fill="#f5f5f5"/>
+
+        <!-- Pink Blush on Cheek Pad -->
+        <ellipse cx="454" cy="104" rx="5.5" ry="3.8" fill="#ff7b72" opacity="0.5"/>
+
+        <!-- SHINY BLACK EYE (Сдвинут вправо к мордочке) -->
+        <g id="seal-eye">
+          <ellipse cx="448" cy="92" rx="4.8" ry="5.2" fill="#000000"/>
+          <!-- Glare Highlights -->
+          <circle cx="446.5" cy="90.5" r="1.8" fill="#ffffff"/>
+          <circle cx="449.5" cy="93.2" r="0.9" fill="#ffffff"/>
+          <!-- Upper Eyelid Arc -->
+          <path d="M 442.5,91 Q 448,86.5 453.5,91" stroke="#2a3a4a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        </g>
+
+        <!-- Nose (Tip of Snout) -->
+        <path d="M 470,99 C 474,97 478,100 475,103 C 473,106 468,104 468,101 Z" fill="#181e24"/>
+        <circle cx="471" cy="99" r="1" fill="#ffffff" opacity="0.9"/>
+
+        <!-- Smile -->
+        <path d="M 462,106 Q 468,109 472,104" stroke="#181e24" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+        <!-- Whiskers -->
+        <g class="whiskers" stroke="#5a5a5a" stroke-width="1.2" stroke-linecap="round" opacity="0.8">
+          <line x1="466" y1="102" x2="488" y2="97"/>
+          <line x1="467" y1="105" x2="491" y2="104"/>
+          <line x1="465" y1="108" x2="487" y2="111"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- Bubbles & Floating Stardust Particles Across Entire Canvas -->
+    <g opacity="0.8">
+      <!-- Left area -->
+      <circle cx="50" cy="215" r="2.2" fill="#79c0ff" class="b1"/>
+      <circle cx="110" cy="200" r="3.0" fill="#00ff88" class="b4"/>
+      <circle cx="170" cy="225" r="1.8" fill="#bc8cff" class="b2"/>
+      <circle cx="230" cy="210" r="2.5" fill="#a5d6ff" class="b5"/>
+
+      <!-- Center area -->
+      <circle cx="290" cy="205" r="3.2" fill="#79c0ff" class="b3"/>
+      <circle cx="350" cy="218" r="2.0" fill="#ec4899" class="b1"/>
+      <circle cx="410" cy="200" r="3.6" fill="#bc8cff" class="b4"/>
+      <circle cx="470" cy="212" r="2.4" fill="#58a6ff" class="b2"/>
+
+      <!-- Right area -->
+      <circle cx="530" cy="222" r="2.8" fill="#00ccff" class="b5"/>
+      <circle cx="600" cy="205" r="2.1" fill="#79c0ff" class="b3"/>
+      <circle cx="670" cy="215" r="3.4" fill="#a78bfa" class="b1"/>
+      <circle cx="740" cy="208" r="2.3" fill="#22d3ee" class="b4"/>
+    </g>
+
+    <!-- OPAQUE WATER LAYER — SYNCED with seal (6s) -->
+    <path fill="url(#waterDeep)">
+      <animate attributeName="d" dur="6s" repeatCount="indefinite"
+        values="M0,172 Q200,162 400,174 T800,168 L800,260 L0,260 Z;
+                M0,176 Q200,182 400,168 T800,175 L800,260 L0,260 Z;
+                M0,174 Q200,166 400,178 T800,172 L800,260 L0,260 Z;
+                M0,172 Q200,162 400,174 T800,168 L800,260 L0,260 Z"/>
+    </path>
+
+    <!-- Secondary Wave Layer -->
+    <path fill="#0a1828" opacity="0.4">
+      <animate attributeName="d" dur="8s" repeatCount="indefinite"
+        values="M0,185 Q200,178 400,188 T800,182 L800,260 L0,260 Z;
+                M0,188 Q200,192 400,184 T800,188 L800,260 L0,260 Z;
+                M0,185 Q200,178 400,188 T800,182 L800,260 L0,260 Z"/>
+    </path>
+
+    <!-- Surface Line -->
+    <path stroke="#79c0ff" stroke-width="1.2" fill="none" opacity="0.5" stroke-linecap="round">
+      <animate attributeName="d" dur="6s" repeatCount="indefinite"
+        values="M0,172 Q200,162 400,174 T800,168;
+                M0,176 Q200,182 400,168 T800,175;
+                M0,174 Q200,166 400,178 T800,172;
+                M0,172 Q200,162 400,174 T800,168"/>
+    </path>
+
+    <!-- Aurora Reflections on Water -->
+    <g stroke="#00ff88" stroke-width="1" stroke-linecap="round" fill="none">
+      <line x1="120" y1="178" x2="180" y2="178" class="reflection" opacity="0.3" style="animation-delay: 0.2s"/>
+      <line x1="280" y1="182" x2="350" y2="182" class="reflection" opacity="0.25" style="animation-delay: 1.2s"/>
+      <line x1="500" y1="180" x2="560" y2="180" class="reflection" opacity="0.3" style="animation-delay: 2s"/>
+      <line x1="580" y1="185" x2="635" y2="185" class="reflection" opacity="0.25" style="animation-delay: 0.5s"/>
+    </g>
+
+    <text x="400" y="244" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="11.5" font-weight="600" fill="#58a6ff" letter-spacing="0.6">
+      by legends-deadlines
+    </text>
+  </g>
+
+  <rect x="0.5" y="0.5" width="799" height="259" rx="11.5" fill="none" stroke="#30363d" stroke-width="0.8"/>
+</svg>
