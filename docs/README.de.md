@@ -55,40 +55,161 @@ Die KI baut den neuen Raum neben dem alten. Sie entscheiden, in welchem Sie wohn
 
 ---
 
-## Schnelleinstieg (CLI)
+## Installation
+
+### Aus GitHub Releases
+
+Laden Sie das neueste Binary für Ihre Plattform von [Releases](https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/releases) herunter:
 
 ```bash
-# Flag erstellen (0% Rollout)
-mdflag create --name new-checkout --hypothesis "Konvertierung um 5% steigern"
+# Linux/macOS
+curl -L https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/releases/latest/download/mdflag-linux-amd64 -o mdflag
+chmod +x mdflag
+sudo mv mdflag /usr/local/bin/
 
-# Rollout anpassen (25%)
-mdflag rollout --name new-checkout --percentage 25
+# Installation überprüfen
+mdflag --help
+```
 
-# Hash-Integrität überprüfen
-mdflag verify
+### Aus Quellcode bauen
 
-# Alle Flags auflisten
-mdflag list
+```bash
+git clone https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag.git
+cd Agent-First-Markdown-Feature-Flag
+go build -o mdflag ./cmd/mdflag/
 ```
 
 ---
 
-## Verwendung im Code (Go)
+## Schnelleinstieg
+
+### 1. Flag erstellen
+
+```bash
+mdflag create \
+  --name new-checkout-flow \
+  --percentage 0 \
+  --hypothesis "Konvertierung des Checkouts um 5% steigern" \
+  --metrics "conversion_rate,checkout_time_seconds" \
+  --author "claude-code-agent" \
+  --description "Neuer einseitiger Checkout-Prozess als Ersatz für den 3-Schritt-Prozess"
+```
+
+Dies erstellt die Datei `.mdflag/new-checkout-flow.md`:
+
+```markdown
+---
+name: new-checkout-flow
+percentage: 0
+targeting: user_id
+status: active
+created: 2026-09-17T10:00:00Z
+author: claude-code-agent
+hypothesis: Konvertierung des Checkouts um 5% steigern
+metrics:
+    - conversion_rate
+    - checkout_time_seconds
+agent_section_hash: "sha256:a1b2c3..."
+human_section_hash: "sha256:d4e5f6..."
+---
+
+## Description
+Neuer einseitiger Checkout-Prozess als Ersatz für den 3-Schritt-Prozess
+```
+
+### 2. Flag im Code verwenden
 
 ```go
-import "github.com/legends-deadlines/mdflag/pkg/mdflag"
+import "github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/pkg/mdflag"
 
+// Client einmalig beim Anwendungsstart initialisieren
 client, err := mdflag.New(".mdflag")
 if err != nil {
     log.Fatal(err)
 }
 
-if client.Enabled("new-checkout", userID) {
-    // Neuer Funktionscode
-} else {
-    // Bisheriger stabiler Code
+// Flag im Request-Handler auswerten
+func handleCheckout(w http.ResponseWriter, r *http.Request) {
+    userID := getUserID(r)
+
+    if client.Enabled("new-checkout-flow", userID) {
+        // Neuer Pfad
+        renderOnePageCheckout(w, r)
+    } else {
+        // Bisheriger stabiler Pfad
+        renderThreeStepCheckout(w, r)
+    }
 }
 ```
+
+### 3. Schrittweise Einführung
+
+```bash
+# Für 5% der Benutzer aktivieren
+mdflag rollout --name new-checkout-flow --percentage 5
+
+# Metriken überwachen, dann auf 25% erhöhen
+mdflag rollout --name new-checkout-flow --percentage 25
+
+# Wenn alles stabil ist, für alle aktivieren (100%)
+mdflag rollout --name new-checkout-flow --percentage 100
+
+# Bei Fehlern sofort deaktivieren (0%)
+mdflag rollout --name new-checkout-flow --percentage 0
+```
+
+### 4. Integrität prüfen
+
+```bash
+mdflag verify
+```
+
+---
+
+## Integration mit KI-Agenten
+
+MDFLAG verbindet sich mit KI-Agenten über MCP (Model Context Protocol).
+
+### Für Cursor
+
+In `.cursor/mcp.json` im Projektverzeichnis hinzufügen:
+
+```json
+{
+  "mcpServers": {
+    "mdflag": {
+      "command": "/path/to/mdflag",
+      "args": ["serve", "--dir", ".mdflag"]
+    }
+  }
+}
+```
+
+### Für Claude Code
+
+In `.claude/mcp.json` hinzufügen:
+
+```json
+{
+  "mcpServers": {
+    "mdflag": {
+      "command": "/path/to/mdflag",
+      "args": ["serve", "--dir", ".mdflag"]
+    }
+  }
+}
+```
+
+---
+
+## Verfügbare MCP-Tools
+
+| Tool | Agentenzugriff | Beschreibung |
+|------|----------------|--------------|
+| `mdflag_create` | Ja | Neues Feature-Flag erstellen |
+| `mdflag_list` | Ja | Alle Flags und deren Status auflisten |
+| `mdflag_verify` | Ja | Integrität aller Flags prüfen |
+| `mdflag rollout` | Nein | Rollout-Prozentsatz ändern (Nur CLI) |
 
 ---
 

@@ -55,40 +55,170 @@ L'IA construit la nouvelle pièce à côté de l'ancienne. Vous décidez dans la
 
 ---
 
-## Démarrage Rapide (CLI)
+## Installation
+
+### Depuis les Releases GitHub
+
+Téléchargez le dernier binaire correspondant à votre plateforme depuis les [Releases](https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/releases) :
 
 ```bash
-# Créer un flag (déploiement à 0%)
-mdflag create --name new-checkout --hypothesis "Augmenter la conversion de 5%"
+# Linux/macOS
+curl -L https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/releases/latest/download/mdflag-linux-amd64 -o mdflag
+chmod +x mdflag
+sudo mv mdflag /usr/local/bin/
 
-# Modifier le déploiement (25%)
-mdflag rollout --name new-checkout --percentage 25
+# Vérifier l'installation
+mdflag --help
+```
 
-# Vérifier l'intégrité des hachages
-mdflag verify
+### Depuis le Code Source
 
-# Lister tous les flags
-mdflag list
+```bash
+git clone https://github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag.git
+cd Agent-First-Markdown-Feature-Flag
+go build -o mdflag ./cmd/mdflag/
 ```
 
 ---
 
-## Utilisation dans le Code (Go)
+## Démarrage Rapide
+
+### 1. Créer un flag
+
+```bash
+mdflag create \
+  --name new-checkout-flow \
+  --percentage 0 \
+  --hypothesis "Augmenter la conversion du paiement de 5%" \
+  --metrics "conversion_rate,checkout_time_seconds" \
+  --author "claude-code-agent" \
+  --description "Nouveau flux de paiement sur une seule page remplaçant le processus à 3 étapes"
+```
+
+Ceci crée le fichier `.mdflag/new-checkout-flow.md` :
+
+```markdown
+---
+name: new-checkout-flow
+percentage: 0
+targeting: user_id
+status: active
+created: 2026-09-17T10:00:00Z
+author: claude-code-agent
+hypothesis: Augmenter la conversion du paiement de 5%
+metrics:
+    - conversion_rate
+    - checkout_time_seconds
+agent_section_hash: "sha256:a1b2c3..."
+human_section_hash: "sha256:d4e5f6..."
+---
+
+## Description
+Nouveau flux de paiement sur une seule page remplaçant le processus à 3 étapes
+```
+
+### 2. Utiliser le flag dans votre code
 
 ```go
-import "github.com/legends-deadlines/mdflag/pkg/mdflag"
+import "github.com/legends-deadlines/Agent-First-Markdown-Feature-Flag/pkg/mdflag"
 
+// Initialiser le client au démarrage de l'application
 client, err := mdflag.New(".mdflag")
 if err != nil {
     log.Fatal(err)
 }
 
-if client.Enabled("new-checkout", userID) {
-    // Nouvelle fonctionnalité
-} else {
-    // Code stable existant
+// Évaluer le flag dans votre gestionnaire de requêtes
+func handleCheckout(w http.ResponseWriter, r *http.Request) {
+    userID := getUserID(r)
+
+    if client.Enabled("new-checkout-flow", userID) {
+        // Nouvelle branche de code
+        renderOnePageCheckout(w, r)
+    } else {
+        // Ancienne branche de code stable
+        renderThreeStepCheckout(w, r)
+    }
 }
 ```
+
+### 3. Déploiement progressif
+
+```bash
+# Activer pour 5% des utilisateurs
+mdflag rollout --name new-checkout-flow --percentage 5
+
+# Surveiller les métriques puis augmenter à 25%
+mdflag rollout --name new-checkout-flow --percentage 25
+
+# Si tout est correct, activer pour tout le monde (100%)
+mdflag rollout --name new-checkout-flow --percentage 100
+
+# En cas d'anomalie, désactiver instantanément (0%)
+mdflag rollout --name new-checkout-flow --percentage 0
+```
+
+### 4. Vérifier l'intégrité
+
+```bash
+mdflag verify
+```
+
+---
+
+## Intégration avec les Agents IA
+
+MDFLAG s'interface avec les agents via MCP (Model Context Protocol).
+
+### Pour Cursor
+
+Dans `.cursor/mcp.json` à la racine de votre projet :
+
+```json
+{
+  "mcpServers": {
+    "mdflag": {
+      "command": "/path/to/mdflag",
+      "args": ["serve", "--dir", ".mdflag"]
+    }
+  }
+}
+```
+
+### Pour Claude Code
+
+Dans `.claude/mcp.json` :
+
+```json
+{
+  "mcpServers": {
+    "mdflag": {
+      "command": "/path/to/mdflag",
+      "args": ["serve", "--dir", ".mdflag"]
+    }
+  }
+}
+```
+
+---
+
+## Outils MCP Disponibles
+
+| Outil | Accès Agent | Description |
+|-------|-------------|-------------|
+| `mdflag_create` | Oui | Créer un nouveau feature flag |
+| `mdflag_list` | Oui | Lister tous les flags et leur statut |
+| `mdflag_verify` | Oui | Vérifier l'intégrité de tous les flags |
+| `mdflag rollout` | Non | Modifier le pourcentage du flag (CLI uniquement) |
+
+---
+
+## Modèle de Sécurité
+
+MDFLAG intègre un système de protection à trois niveaux :
+1. **Intégrité basée sur les hachages** : SHA-256 pour vérifier le contenu
+2. **Séparation des outils** : Les agents créent des flags mais ne peuvent pas les activer
+3. **Git hooks (optionnel)** : Blocage au niveau du commit en cas d'altération
 
 ---
 
