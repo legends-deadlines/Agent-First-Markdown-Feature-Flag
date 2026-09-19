@@ -1,3 +1,18 @@
+// Пакет mdflag предоставляет публичную библиотеку для проверки
+// флагов в рантайме приложения.
+//
+// Базовое использование:
+//
+//     client, err := mdflag.New(".mdflag")
+//     if err != nil {
+//         log.Fatal(err)
+//     }
+//
+//     if client.Enabled("new-checkout", userID) {
+//         // Новая ветка кода
+//     } else {
+//         // Старая ветка кода
+//     }
 package mdflag
 
 import (
@@ -8,39 +23,68 @@ import (
 	"sync"
 	"time"
 
-	"github.com/legends-deadlines/mdflag/internal/flag"
+	"github.com/yourname/mdflag/internal/flag"
 )
 
-// Client предоставляет API для проверки флагов в приложении
+// Client предоставляет API для проверки флагов в приложении.
+// Потокобезопасен: можно использовать из нескольких горутин.
 type Client struct {
 	mu       sync.RWMutex
 	flags    map[string]*flag.Flag
 	flagsDir string
+
+	// nowFunc позволяет переопределить время в тестах
+	nowFunc func() time.Time
 }
 
-// New создаёт новый клиент, читая все флаги из директории
-func New(flagsDir string) (*Client, error) {
+// Option задаёт опциональную настройку клиента
+type Option func(*Client)
+
+// WithNowFunc переопределяет функцию времени (для тестов)
+func WithNowFunc(f func() time.Time) Option {
+	return func(c *Client) {
+		c.nowFunc = f
+	}
+}
+
+// New создаёт новый клиент, читая все флаги из указанной директории.
+// Возвращает ошибку, если директория не существует или не содержит валидных флагов.
+func New(flagsDir string, opts ...Option) (*Client, error) {
 	c := &Client{
 		flags:    make(map[string]*flag.Flag),
 		flagsDir: flagsDir,
+		nowFunc:  time.Now,
 	}
 
+	// Применяем опции
+	for _, opt := range opts {
+		opt(c)
+	}
+
+	// Загружаем все флаги
 	if err := c.loadAll(); err != nil {
-		return nil, fmt.Errorf("load flags: %w", err)
+		return nil, fmt.Errorf("load flags from %s: %w", flagsDir, err)
 	}
 
 	return c, nil
 }
 
-// Enabled проверяет, включён ли флаг для данной сущности
-// entityID — идентификатор для детерминированного таргетинга (например, user_id)
+// Enabled проверяет, включён ли флаг для данной сущности.
+//
+// Параметры:
+//   - flagName: имя флага
+//   - entityID: идентификатор сущности для таргетинга (например, user_id или session_id)
+//
+// Возвращает true, если флаг включён для данной сущности, иначе false.
+// Если флаг не найден, возвращает false (безопасное поведение по умолчанию).
 func (c *Client) Enabled(flagName, entityID string) bool {
 	c.mu.RLock()
 	f, ok := c.flags[flagName]
 	c.mu.RUnlock()
 
+	// Флаг не найден = выключен (безопасное поведение)
 	if !ok {
-		return false // флаг не найден = выключен
+		return false
 	}
 
 	// Проверяем статус
@@ -49,7 +93,7 @@ func (c *Client) Enabled(flagName, entityID string) bool {
 	}
 
 	// Проверяем срок действия
-	if !f.Meta.Expires.IsZero() && f.Meta.Expires.Before(now()) {
+	if !f.Meta.Expires.IsZero() && f.Meta.Expires.Before(c.nowFunc()) {
 		return false
 	}
 
@@ -58,29 +102,71 @@ func (c *Client) Enabled(flagName, entityID string) bool {
 		return false
 	}
 
-	// 100% = включен для всех
+	// 100% = включён для всех
 	if f.Meta.Percentage == 100 {
 		return true
 	}
 
-	// Детерминированный хеш для процента
+	// Детерминированный хеш для процентного таргетинга
 	return c.inPercentage(flagName, entityID, f.Meta.Percentage)
 }
 
-// inPercentage проверяет, попадает ли сущность в процент включения
+// Get возвращает мета-данные флага по имени.
+// Возвращает ошибку, если флаг не найден.
+func (c *Client) Get(flagName string) (*flag.Flag, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	f, ok := c.flags[flagName]
+	if !ok {
+		return nil, fmt.Errorf("flag %q not found", flagName)
+	}
+
+	return f, nil
+}
+
+// List возвращает имена всех загруженных флагов
+func (c *Client) List() []string {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	names := make([]string, 0, len(c.flags))
+	for name := range c.flags {
+		names = append(names, name)
+	}
+	return names
+}
+
+// Reload перечитывает все флаги из директории.
+// Вызывается при изменении файлов (если включён file watcher)
+// или вручную.
+func (c *Client) Reload() error {
+	return c.loadAll()
+}
+
+// inPercentage проверяет, попадает ли сущность в процент включения.
+// Использует FNV-1a хеш для детерминизма: одна и та же пара
+// (flagName, entityID) всегда даёт один и тот же результат.
 func (c *Client) inPercentage(flagName, entityID string, percentage int) bool {
-	// Используем FNV-1a для скорости и детерминизма
+	// FNV-1a: быстрый, детерминированный, равномерный
 	h := fnv.New32a()
+
+	// Записываем имя флага
 	_, _ = h.Write([]byte(flagName))
+	// Разделитель для предотвращения коллизий
 	_, _ = h.Write([]byte(":"))
+	// Записываем идентификатор сущности
 	_, _ = h.Write([]byte(entityID))
 
-	// Хеш -> число 0-99
+	// Хеш -> число 0-99 (бакет)
 	bucket := int(h.Sum32() % 100)
+
+	// Если бакет меньше процента, сущность включена
 	return bucket < percentage
 }
 
-// loadAll читает все флаги из директории
+// loadAll читает все флаги из директории и обновляет кэш.
+// Флаги с ошибками парсинга или нарушенной целостностью пропускаются.
 func (c *Client) loadAll() error {
 	pattern := filepath.Join(c.flagsDir, "*.md")
 	matches, err := filepath.Glob(pattern)
@@ -88,8 +174,8 @@ func (c *Client) loadAll() error {
 		return fmt.Errorf("glob flags dir: %w", err)
 	}
 
-	// Pre-allocate для производительности
-	flagsMap := make(map[string]*flag.Flag, len(matches))
+	// Pre-allocate map нужного размера для избежания реаллокаций
+	newFlags := make(map[string]*flag.Flag, len(matches))
 
 	for _, path := range matches {
 		f, err := flag.ParseFile(path)
@@ -106,14 +192,13 @@ func (c *Client) loadAll() error {
 			continue
 		}
 
-		flagsMap[f.Meta.Name] = f
+		newFlags[f.Meta.Name] = f
 	}
 
+	// Атомарно заменяем кэш
 	c.mu.Lock()
-	c.flags = flagsMap
+	c.flags = newFlags
 	c.mu.Unlock()
+
 	return nil
 }
-
-// now — функция времени, которую можно переопределить в тестах
-var now = func() time.Time { return time.Now() }

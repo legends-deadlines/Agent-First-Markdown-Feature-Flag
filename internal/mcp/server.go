@@ -1,42 +1,59 @@
+// Пакет mcp реализует MCP-сервер для MDFLAG.
+// Сервер предоставляет инструменты для ИИ-агентов (Cursor, Claude Code, Windsurf).
+//
+// Транспорт: stdio (стандарт для локальных MCP-серверов).
+// Среда агента сама поднимает процесс "mdflag serve" по конфигурации.
 package mcp
 
 import (
 	"context"
 	"fmt"
+	"os"
 
-	"github.com/legends-deadlines/mdflag/internal/cli"
+	"github.com/mark3labs/mcp-go/server"
+
+	"github.com/legends-deadlines/mdflag/internal/flag"
 )
 
-// Server handles Model Context Protocol stdio tools for AI coding agents.
+// Server представляет MCP-сервер для MDFLAG
 type Server struct {
-	StoreDir string
+	store    *flag.Store
+	flagsDir string
 }
 
-// NewServer initializes a new MCP server.
-func NewServer(storeDir string) *Server {
-	if storeDir == "" {
-		storeDir = ".mdflag"
+// NewServer создаёт новый MCP-сервер
+func NewServer(flagsDir string) (*Server, error) {
+	store, err := flag.NewStore(flagsDir)
+	if err != nil {
+		return nil, fmt.Errorf("init flag store: %w", err)
 	}
-	return &Server{StoreDir: storeDir}
+
+	return &Server{
+		store:    store,
+		flagsDir: flagsDir,
+	}, nil
 }
 
-// HandleCreateFlag handles the mdflag_create MCP tool invocation from an agent.
-func (s *Server) HandleCreateFlag(name, hypothesis, description, author string, metrics []string) error {
-	opts := cli.CreateOptions{
-		Name:        name,
-		Hypothesis:  hypothesis,
-		Description: description,
-		Author:      author,
-		Targeting:   "user_id",
-		Metrics:     metrics,
-		Dir:         s.StoreDir,
-	}
-	return cli.CreateFlag(opts)
-}
+// Serve запускает MCP-сервер на stdio-транспорте.
+// Блокируется до завершения процесса.
+func (s *Server) Serve() error {
+	mcpServer := server.NewMCPServer(
+		"mdflag",
+		"0.1.0",
+		server.WithToolCapabilities(true),
+	)
 
-// Start launches the stdio transport listener for MCP.
-func (s *Server) Start(ctx context.Context) error {
-	fmt.Println("MDFLAG MCP Server running on stdio...")
-	<-ctx.Done()
-	return nil
+	// Регистрируем инструменты, доступные агенту
+	mcpServer.AddTool(s.createTool(), s.handleCreate)
+	mcpServer.AddTool(s.listTool(), s.handleList)
+	mcpServer.AddTool(s.verifyTool(), s.handleVerify)
+
+	// ВАЖНО: инструменты "rollout" и "delete" НЕ регистрируются.
+	// Человек управляет флагами через CLI:
+	//   mdflag rollout --name <flag> --percentage <0-100>
+	// Это обеспечивает асимметрию прав: агент создаёт, человек управляет.
+
+	// Запускаем stdio-сервер
+	stdioServer := server.NewStdioServer(mcpServer)
+	return stdioServer.Listen(context.Background(), os.Stdin, os.Stdout)
 }
