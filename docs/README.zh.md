@@ -6,7 +6,7 @@
 
 [![Status](https://img.shields.io/badge/🚀%20状态-v1.0.0%20就绪-10b981?style=flat-square&labelColor=1c2128)](#)
 [![开源协议](https://img.shields.io/badge/协议-MIT-79c0ff?style=flat-square&labelColor=1c2128)](../LICENSE)
-[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
+[![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
 
 <br/>
 

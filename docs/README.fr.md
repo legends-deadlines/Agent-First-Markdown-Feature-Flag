@@ -6,7 +6,7 @@
 
 [![Statut](https://img.shields.io/badge/🚀%20Statut-v1.0.0%20Prêt-10b981?style=flat-square&labelColor=1c2128)](#)
 [![Licence](https://img.shields.io/badge/Licence-MIT-79c0ff?style=flat-square&labelColor=1c2128)](../LICENSE)
-[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
+[![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
 
 <br/>
 
