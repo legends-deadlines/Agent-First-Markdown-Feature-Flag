@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="../.github/assets/banner.svg?v=1.0.0" alt="Agent-First Feature Flags" width="100%"/>
+<img src="../.github/assets/banner.svg?v=1.0.2" alt="Agent-First Feature Flags" width="100%"/>
 
 <br/>
 
-[![Status](https://img.shields.io/badge/🚀%20Estado-v1.0.0%20Listo-10b981?style=flat-square&labelColor=1c2128)](#)
+[![Status](https://img.shields.io/badge/🚀%20Estado-v1.0.2%20Listo-10b981?style=flat-square&labelColor=1c2128)](#)
 [![Licencia](https://img.shields.io/badge/Licencia-MIT-79c0ff?style=flat-square&labelColor=1c2128)](../LICENSE)
 [![Go](https://img.shields.io/badge/Go-1.27+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
 
