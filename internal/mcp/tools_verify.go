@@ -25,7 +25,7 @@ func (s *Server) verifyTool() mcp.Tool {
 func (s *Server) handleVerify(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	results, err := flag.ValidateDir(s.flagsDir)
 	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("failed to validate flags: %v", err)), nil
+		return newToolResultError(fmt.Sprintf("failed to validate flags: %v", err)), nil
 	}
 
 	if len(results) == 0 {

@@ -28,6 +28,10 @@ func Create(args []string) error {
 		return fmt.Errorf("параметр --name обязателен")
 	}
 
+	if *percentage < 0 || *percentage > 100 {
+		return fmt.Errorf("процент включения должен быть от 0 до 100, получено: %d", *percentage)
+	}
+
 	st, err := mdflag.NewStore(*dir)
 	if err != nil {
 		return fmt.Errorf("ошибка инициализации хранилища: %w", err)

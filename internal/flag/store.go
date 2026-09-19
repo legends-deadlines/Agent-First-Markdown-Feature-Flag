@@ -20,11 +20,16 @@ func NewStore(dir string) (*Store, error) {
 }
 
 func (s *Store) Create(meta FlagMeta, body string) (*Flag, error) {
+	path := s.flagPath(meta.Name)
+	if _, err := os.Stat(path); err == nil {
+		return nil, fmt.Errorf("flag %q already exists", meta.Name)
+	}
+
 	f := &Flag{
 		Meta: meta,
 		Body: body,
 	}
-	if err := WriteFile(s.flagPath(meta.Name), f); err != nil {
+	if err := WriteFile(path, f); err != nil {
 		return nil, err
 	}
 	return f, nil

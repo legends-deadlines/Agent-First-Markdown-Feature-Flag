@@ -123,13 +123,10 @@ func TestUnsanctionedTampering(t *testing.T) {
 }
 
 func stringsReplaceFirst(s, old, new string) string {
-	i := filepath.Ext(s)
-	_ = i
 	return stringReplace(s, old, new)
 }
 
 func stringReplace(s, old, new string) string {
-	idx := len(s)
 	for i := 0; i <= len(s)-len(old); i++ {
 		if s[i:i+len(old)] == old {
 			return s[:i] + new + s[i+len(old):]

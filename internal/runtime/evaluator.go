@@ -1,7 +1,7 @@
 package runtime
 
 import (
-	"crypto/fnv"
+	"hash/fnv"
 	"time"
 
 	"github.com/legends-deadlines/mdflag/internal/flag"

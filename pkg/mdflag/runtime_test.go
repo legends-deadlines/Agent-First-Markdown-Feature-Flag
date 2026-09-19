@@ -1,10 +1,11 @@
 package mdflag
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
-	"github.com/yourname/mdflag/internal/flag"
+	"github.com/legends-deadlines/mdflag/internal/flag"
 )
 
 // setupTestFlag создаёт тестовый флаг в указанной директории
@@ -27,7 +28,7 @@ func setupTestFlag(t *testing.T, dir, name string, percentage int, status string
 		t.Fatalf("NewStore failed: %v", err)
 	}
 
-	err = store.Create(meta, "## Description\nTest")
+	_, err = store.Create(meta, "## Description\nTest")
 	if err != nil {
 		t.Fatalf("Create flag failed: %v", err)
 	}
@@ -138,7 +139,7 @@ func TestEnabled_ExpiredFlag(t *testing.T) {
 		t.Fatalf("NewStore failed: %v", err)
 	}
 
-	err = store.Create(meta, "Test")
+	_, err = store.Create(meta, "Test")
 	if err != nil {
 		t.Fatalf("Create flag failed: %v", err)
 	}

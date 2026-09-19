@@ -23,7 +23,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yourname/mdflag/internal/flag"
+	"github.com/legends-deadlines/mdflag/internal/flag"
 )
 
 // Client предоставляет API для проверки флагов в приложении.

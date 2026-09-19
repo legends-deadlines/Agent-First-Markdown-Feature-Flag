@@ -10,10 +10,17 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 
 	"github.com/legends-deadlines/mdflag/internal/flag"
 )
+
+func newToolResultError(msg string) *mcp.CallToolResult {
+	res := mcp.NewToolResultText(msg)
+	res.IsError = true
+	return res
+}
 
 // Server представляет MCP-сервер для MDFLAG
 type Server struct {

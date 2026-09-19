@@ -52,17 +52,17 @@ func (s *Server) createTool() mcp.Tool {
 
 // handleCreate обрабатывает вызов инструмента создания флага
 func (s *Server) handleCreate(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-	args := request.GetArguments()
+	args := request.Params.Arguments
 
 	// Извлекаем обязательные параметры
 	name, ok := args["name"].(string)
 	if !ok || name == "" {
-		return mcp.NewToolResultError("parameter 'name' is required and must be a non-empty string"), nil
+		return newToolResultError("parameter 'name' is required and must be a non-empty string"), nil
 	}
 
 	hypothesis, ok := args["hypothesis"].(string)
 	if !ok || hypothesis == "" {
-		return mcp.NewToolResultError("parameter 'hypothesis' is required and must be a non-empty string"), nil
+		return newToolResultError("parameter 'hypothesis' is required and must be a non-empty string"), nil
 	}
 
 	// Извлекаем опциональные параметры со значениями по умолчанию
@@ -98,12 +98,12 @@ func (s *Server) handleCreate(ctx context.Context, request mcp.CallToolRequest) 
 
 	// Валидация процента
 	if percentage < 0 || percentage > 100 {
-		return mcp.NewToolResultError(fmt.Sprintf("percentage must be 0-100, got %d", percentage)), nil
+		return newToolResultError(fmt.Sprintf("percentage must be 0-100, got %d", percentage)), nil
 	}
 
 	// Валидация таргетинга
 	if !flag.IsValidTargeting(targeting) {
-		return mcp.NewToolResultError(fmt.Sprintf("invalid targeting %q: must be 'user_id', 'session_id', or 'random'", targeting)), nil
+		return newToolResultError(fmt.Sprintf("invalid targeting %q: must be 'user_id', 'session_id', or 'random'", targeting)), nil
 	}
 
 	// Парсим метрики
@@ -123,7 +123,7 @@ func (s *Server) handleCreate(ctx context.Context, request mcp.CallToolRequest) 
 		var err error
 		expiresTime, err = time.Parse(time.RFC3339, expiresStr)
 		if err != nil {
-			return mcp.NewToolResultError(fmt.Sprintf("invalid expires format %q: expected RFC3339 (e.g., 2026-12-17T00:00:00Z)", expiresStr)), nil
+			return newToolResultError(fmt.Sprintf("invalid expires format %q: expected RFC3339 (e.g., 2026-12-17T00:00:00Z)", expiresStr)), nil
 		}
 	}
 
@@ -149,7 +149,7 @@ func (s *Server) handleCreate(ctx context.Context, request mcp.CallToolRequest) 
 	// Создаём флаг через хранилище
 	f, err := s.store.Create(meta, bodyText)
 	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("failed to create flag: %v", err)), nil
+		return newToolResultError(fmt.Sprintf("failed to create flag: %v", err)), nil
 	}
 
 	// Формируем сообщение об успехе

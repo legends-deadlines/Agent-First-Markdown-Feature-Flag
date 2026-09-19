@@ -80,6 +80,9 @@ func splitFrontmatter(data []byte) ([]byte, []byte, error) {
 	frontmatter := rest[:sep]
 	// Пропускаем "\n---" и берём остальное как тело
 	body := rest[sep+4:]
+	if len(body) > 0 && body[0] == '\n' {
+		body = body[1:]
+	}
 
 	return frontmatter, body, nil
 }

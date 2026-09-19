@@ -23,7 +23,7 @@ func (s *Server) listTool() mcp.Tool {
 func (s *Server) handleList(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
 	flags, err := s.store.List()
 	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("failed to list flags: %v", err)), nil
+		return newToolResultError(fmt.Sprintf("failed to list flags: %v", err)), nil
 	}
 
 	if len(flags) == 0 {
