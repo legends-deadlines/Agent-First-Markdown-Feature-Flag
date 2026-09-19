@@ -1,3 +1,15 @@
+<div align="center">
+
+<img src=".github/assets/banner.svg" alt="Agent-First Feature Flags" width="100%"/>
+
+<br/>
+
+**🇷🇺 [Читать на русском](docs/README.ru.md)**
+
+</div>
+
+---
+
 # MDFLAG
 
 **Feature flags for AI agents. No SaaS. No API keys. Just Markdown files in your Git repo.**
@@ -462,3 +474,14 @@ MIT License - see [LICENSE](LICENSE) for details.
 - [ ] Flag analytics and metrics integration
 - [ ] Team features: CODEOWNERS integration, CI checks
 - [ ] Web dashboard for flag management
+
+---
+
+<div align="center">
+
+<img src=".github/assets/seal.svg" alt="MDFLAG Seal Mascot" width="600"/>
+
+<sub>Spotted Seal Mascot — by <a href="https://github.com/legends-deadlines">legends-deadlines</a> & <a href="https://github.com/ALEZOEX">ALEZOEX</a></sub>
+
+</div>
+
