@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="../.github/assets/banner.svg" alt="Agent-First Feature Flags" width="100%"/>
+<img src="../.github/assets/banner.svg?v=1.0.0" alt="Agent-First Feature Flags" width="100%"/>
 
 <br/>
 
