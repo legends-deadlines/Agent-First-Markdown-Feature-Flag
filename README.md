@@ -481,7 +481,6 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 <img src=".github/assets/seal.svg" alt="MDFLAG Seal Mascot" width="600"/>
 
-<sub>Spotted Seal Mascot — by <a href="https://github.com/legends-deadlines">legends-deadlines</a> & <a href="https://github.com/ALEZOEX">ALEZOEX</a></sub>
-
 </div>
+
 
