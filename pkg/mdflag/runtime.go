@@ -3,16 +3,16 @@
 //
 // Базовое использование:
 //
-//     client, err := mdflag.New(".mdflag")
-//     if err != nil {
-//         log.Fatal(err)
-//     }
+//	client, err := mdflag.New(".mdflag")
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
 //
-//     if client.Enabled("new-checkout", userID) {
-//         // Новая ветка кода
-//     } else {
-//         // Старая ветка кода
-//     }
+//	if client.Enabled("new-checkout", userID) {
+//	    // Новая ветка кода
+//	} else {
+//	    // Старая ветка кода
+//	}
 package mdflag
 
 import (
