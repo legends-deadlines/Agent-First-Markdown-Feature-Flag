@@ -4,7 +4,7 @@
 
 <br/>
 
-**🇷🇺 [Читать на русском](docs/README.ru.md)**
+[English](README.md) | [Русский](docs/README.ru.md) | [Español](docs/README.es.md) | [中文](docs/README.zh.md) | [日本語](docs/README.ja.md) | [Français](docs/README.fr.md) | [Deutsch](docs/README.de.md)
 
 </div>
 
