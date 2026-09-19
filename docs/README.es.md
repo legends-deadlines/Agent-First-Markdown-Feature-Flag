@@ -4,6 +4,12 @@
 
 <br/>
 
+[![Status](https://img.shields.io/badge/🚀%20Estado-v1.0.0%20Listo-10b981?style=flat-square&labelColor=1c2128)](#)
+[![Licencia](https://img.shields.io/badge/Licencia-MIT-79c0ff?style=flat-square&labelColor=1c2128)](../LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.24+-00ADD8?style=flat-square&logo=go&labelColor=1c2128)](#)
+
+<br/>
+
 [English](../README.md) | [Русский](README.ru.md) | [Español](README.es.md) | [中文](README.zh.md) | [日本語](README.ja.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
 </div>
